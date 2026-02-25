@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'r
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer.jsx';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import AdminLogin from './pages/AdminLogin';
@@ -63,9 +64,10 @@ function AppContent() {
   if (loading) return null;
 
   return (
-    <>
+    <div className="flex min-h-screen flex-col">
       {showNavbar && <Navbar />}
-      <Routes>
+      <main className="flex-grow">
+        <Routes>
         <Route path="/login" element={<UserPublicRoute><Login /></UserPublicRoute>} />
         <Route path="/register" element={<UserPublicRoute><Register /></UserPublicRoute>} />
         <Route path="/admin/login" element={<AdminPublicRoute><AdminLogin /></AdminPublicRoute>} />
@@ -145,9 +147,11 @@ function AppContent() {
         <Route path="/admin-dashboard" element={<Navigate to="/admin/dashboard" replace />} />
         <Route path="/" element={<Navigate to={isAuthenticated ? (user?.role === 'admin' ? '/admin/dashboard' : '/dashboard') : '/login'} replace />} />
         <Route path="*" element={<Navigate to={isAuthenticated ? (user?.role === 'admin' ? '/admin/dashboard' : '/dashboard') : '/login'} replace />} />
-      </Routes>
-      <Toaster position="top-right" />
-    </>
+        </Routes>
+        <Toaster position="top-right" />
+      </main>
+      <Footer />
+    </div>
   );
 }
 
