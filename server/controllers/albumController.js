@@ -2,12 +2,10 @@ const Album = require('../models/Album');
 const cloudinary = require('../config/cloudinary');
 const User = require('../models/User');
 
-// Get all albums (owned and shared)
 exports.getAllAlbums = async (req, res) => {
   try {
     const { search, eventType, year } = req.query;
 
-    // Build search filters
     let searchFilter = {};
     if (search) {
       searchFilter.title = { $regex: search, $options: 'i' };
@@ -17,7 +15,7 @@ exports.getAllAlbums = async (req, res) => {
     }
      Album.find({
       isPublic: true, 
-      
+
      })
 
     if (year) {
@@ -26,7 +24,6 @@ exports.getAllAlbums = async (req, res) => {
       searchFilter.eventDate = { $gte: startDate, $lte: endDate };
     }
 
-    // Get all public albums (viewable by everyone) - newest first
     const publicAlbums = await Album.find({
       isPublic: true,
       ...searchFilter,
@@ -34,21 +31,18 @@ exports.getAllAlbums = async (req, res) => {
       .populate('userId', 'name email')
       .sort({ createdAt: -1 });
 
-    // Get user's own albums - newest first
     const ownedAlbums = await Album.find({
       userId: req.user.id,
       ...searchFilter,
     }).sort({ createdAt: -1 });
 
-    // Get albums shared with user - newest first
     const sharedAlbums = await Album.find({
       sharedWith: req.user.id,
       ...searchFilter,
     }).sort({ createdAt: -1 });
 
-    // Combine and remove duplicates
     const allAlbums = [...publicAlbums];
-    
+
     ownedAlbums.forEach(album => {
       if (!allAlbums.find(a => a._id.toString() === album._id.toString())) {
         allAlbums.push(album);
@@ -71,7 +65,6 @@ exports.getAllAlbums = async (req, res) => {
   }
 };
 
-// Get single album
 exports.getAlbum = async (req, res) => {
   try {
     const album = await Album.findById(req.params.id);
@@ -80,12 +73,10 @@ exports.getAlbum = async (req, res) => {
       return res.status(404).json({ message: 'Album not found' });
     }
 
-    // Check owner, public, sharedWith or connection
     const isOwner = album.userId.toString() === req.user.id;
     const isPublic = album.isPublic;
     const isShared = album.sharedWith && album.sharedWith.some(id => id.toString() === req.user.id);
 
-    // Check if requester is connected to owner
     let isConnected = false;
     if (!isOwner) {
       const owner = await User.findById(album.userId);
@@ -107,7 +98,6 @@ exports.getAlbum = async (req, res) => {
   }
 };
 
-// Create album
 exports.createAlbum = async (req, res) => {
   try {
     const { title, eventType, description, eventDate } = req.body;
@@ -133,7 +123,6 @@ exports.createAlbum = async (req, res) => {
   }
 };
 
-// Update album
 exports.updateAlbum = async (req, res) => {
   try {
     let album = await Album.findById(req.params.id);
@@ -141,7 +130,6 @@ exports.updateAlbum = async (req, res) => {
     if (!album) {
       return res.status(404).json({ message: 'Album not found' });
     }
-    // allow owner or admin
     const isOwner = album.userId.toString() === req.user.id;
     const isAdmin = req.user.role === 'admin';
 
@@ -149,7 +137,6 @@ exports.updateAlbum = async (req, res) => {
       return res.status(403).json({ message: 'Not authorized to update this album' });
     }
 
-    // Validate allowed update fields (title, description) and optionally handle file upload for coverImage
     const allowedFields = ['title', 'description'];
     const updates = {};
     for (const key of allowedFields) {
@@ -166,11 +153,9 @@ exports.updateAlbum = async (req, res) => {
       return res.status(400).json({ message: 'Invalid description' });
     }
 
-    // Handle cover image file upload (multipart/form-data)
     if (req.files && req.files.coverImage) {
       const file = req.files.coverImage;
       try {
-        // Upload to Cloudinary
         const result = await cloudinary.uploader.upload(file.tempFilePath, {
           resource_type: 'image',
           folder: 'family-memory/album-covers',
@@ -178,11 +163,9 @@ exports.updateAlbum = async (req, res) => {
           fetch_format: 'auto',
         });
 
-        // remove temp file
         const fs = require('fs');
         if (fs.existsSync(file.tempFilePath)) fs.unlinkSync(file.tempFilePath);
 
-        // delete old cover image if present
         if (album.coverImagePublicId) {
           try {
             await cloudinary.uploader.destroy(album.coverImagePublicId);
@@ -198,9 +181,7 @@ exports.updateAlbum = async (req, res) => {
         return res.status(500).json({ message: 'Failed to upload cover image' });
       }
     } else if (Object.prototype.hasOwnProperty.call(req.body, 'coverImage')) {
-      // If client explicitly sent coverImage field as empty string or null to clear
       if (!req.body.coverImage) {
-        // delete existing cover from cloudinary if exists
         if (album.coverImagePublicId) {
           try {
             await cloudinary.uploader.destroy(album.coverImagePublicId);
@@ -211,7 +192,6 @@ exports.updateAlbum = async (req, res) => {
         updates.coverImage = null;
         updates.coverImagePublicId = null;
       } else if (typeof req.body.coverImage === 'string') {
-        // allow setting direct URL
         updates.coverImage = req.body.coverImage;
         updates.coverImagePublicId = album.coverImagePublicId || null;
       }
@@ -227,7 +207,6 @@ exports.updateAlbum = async (req, res) => {
   }
 };
 
-// Delete album
 exports.deleteAlbum = async (req, res) => {
   try {
     const album = await Album.findById(req.params.id);
@@ -236,7 +215,6 @@ exports.deleteAlbum = async (req, res) => {
       return res.status(404).json({ message: 'Album not found' });
     }
 
-    // Check if user is owner or admin
     const isOwner = album.userId.toString() === req.user.id;
     const isAdmin = req.user.role === 'admin';
 
@@ -244,7 +222,6 @@ exports.deleteAlbum = async (req, res) => {
       return res.status(403).json({ message: 'Not authorized to delete this album' });
     }
 
-    // Delete photos from Cloudinary
     for (const photo of album.photos) {
       if (photo.publicId) {
         await cloudinary.uploader.destroy(photo.publicId);
@@ -262,7 +239,6 @@ exports.deleteAlbum = async (req, res) => {
   }
 };
 
-// Upload photo to album
 exports.uploadPhoto = async (req, res) => {
   try {
     const album = await Album.findById(req.params.id);
@@ -283,7 +259,6 @@ exports.uploadPhoto = async (req, res) => {
     const file = req.files.image;
     const caption = req.body.caption || '';
 
-    // Upload to Cloudinary using file path
     const result = await cloudinary.uploader.upload(file.tempFilePath, {
       resource_type: 'image',
       folder: 'family-memory/albums',
@@ -291,7 +266,6 @@ exports.uploadPhoto = async (req, res) => {
       fetch_format: 'auto'
     });
 
-    // Clean up temp file
     const fs = require('fs');
     if (fs.existsSync(file.tempFilePath)) {
       fs.unlinkSync(file.tempFilePath);
@@ -320,7 +294,6 @@ exports.uploadPhoto = async (req, res) => {
   }
 };
 
-// Delete photo from album
 exports.deletePhoto = async (req, res) => {
   try {
     const { albumId, photoId } = req.params;
@@ -339,7 +312,6 @@ exports.deletePhoto = async (req, res) => {
       return res.status(404).json({ message: 'Photo not found' });
     }
 
-    // Delete from Cloudinary
     if (photo.publicId) {
       await cloudinary.uploader.destroy(photo.publicId);
     }
@@ -355,7 +327,6 @@ exports.deletePhoto = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-// Share album with users
 exports.shareAlbum = async (req, res) => {
   try {
     const { id } = req.params;
@@ -371,12 +342,10 @@ exports.shareAlbum = async (req, res) => {
       return res.status(403).json({ message: 'Not authorized to share this album' });
     }
 
-    // Set public status
     if (isPublic !== undefined) {
       album.isPublic = isPublic;
     }
 
-    // Add users to sharedWith if provided
     if (userIds && Array.isArray(userIds)) {
       userIds.forEach(userId => {
         if (!album.sharedWith.includes(userId)) {

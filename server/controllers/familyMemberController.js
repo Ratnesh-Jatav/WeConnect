@@ -1,6 +1,5 @@
 const FamilyMember = require('../models/FamilyMember');
 
-// Get all family members
 exports.getAllMembers = async (req, res) => {
   try {
     const { search, relation } = req.query;
@@ -27,7 +26,6 @@ exports.getAllMembers = async (req, res) => {
   }
 };
 
-// Get single family member
 exports.getMember = async (req, res) => {
   try {
     const member = await FamilyMember.findById(req.params.id);
@@ -36,7 +34,6 @@ exports.getMember = async (req, res) => {
       return res.status(404).json({ message: 'Family member not found' });
     }
 
-    // Allow owner or connected users to view
     if (member.userId.toString() !== req.user.id) {
       const User = require('../models/User');
       const owner = await User.findById(member.userId);
@@ -55,7 +52,6 @@ exports.getMember = async (req, res) => {
   }
 };
 
-// Add family member
 exports.addMember = async (req, res) => {
   try {
     const { name, relation, dateOfBirth, bio, email, phone, address } = req.body;
@@ -84,7 +80,6 @@ exports.addMember = async (req, res) => {
   }
 };
 
-// Update family member
 exports.updateMember = async (req, res) => {
   try {
     let member = await FamilyMember.findById(req.params.id);
@@ -112,7 +107,6 @@ exports.updateMember = async (req, res) => {
   }
 };
 
-// Delete family member
 exports.deleteMember = async (req, res) => {
   try {
     const member = await FamilyMember.findById(req.params.id);

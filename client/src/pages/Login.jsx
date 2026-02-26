@@ -88,7 +88,7 @@ const Login = () => {
         <p className="rounded-lg border border-dashed border-slate-300 bg-slate-100 p-2.5 text-center text-sm text-slate-500">
           <a href="/admin/login" className="font-bold text-red-600 hover:text-red-700">Admin Login</a>
         </p>
-       
+
       </div>
     </div>
   );

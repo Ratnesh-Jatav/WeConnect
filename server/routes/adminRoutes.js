@@ -3,7 +3,6 @@ const router = express.Router();
 const { auth, adminOnly } = require('../middleware/auth');
 const adminCtrl = require('../controllers/adminController');
 
-// Protected admin routes
 router.get('/stats', auth, adminOnly, adminCtrl.getStats);
 router.get('/users', auth, adminOnly, adminCtrl.getAllUsers);
 router.get('/user/:id/posts', auth, adminOnly, adminCtrl.getUserPosts);
@@ -11,7 +10,6 @@ router.get('/user/:id/posts', auth, adminOnly, adminCtrl.getUserPosts);
 router.delete('/delete-user/:id', auth, adminOnly, adminCtrl.deleteUser);
 router.delete('/delete-post/:id', auth, adminOnly, adminCtrl.deletePost);
 
-// Admin management for albums/videos used by frontend admin
 router.get('/albums', auth, adminOnly, async (req, res) => {
   const Album = require('../models/Album');
   try {

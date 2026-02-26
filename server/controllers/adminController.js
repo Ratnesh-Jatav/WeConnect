@@ -5,14 +5,12 @@ const Video = require('../models/Video');
 const RefreshToken = require('../models/RefreshToken');
 const cloudinary = require('../config/cloudinary');
 
-// GET /api/admin/stats
 const getStats = async (req, res) => {
   try {
     const totalUsers = await User.countDocuments();
     const totalAlbums = await Album.countDocuments();
     const totalVideos = await Video.countDocuments();
 
-    // Count photos from albums and posts media
     const albums = await Album.find({}, 'photos');
     let totalPhotos = 0;
     albums.forEach((a) => {
@@ -31,7 +29,6 @@ const getStats = async (req, res) => {
   }
 };
 
-// GET /api/admin/users
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.find()
@@ -45,7 +42,6 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-// GET /api/admin/user/:id/posts
 const getUserPosts = async (req, res) => {
   try {
     const { id } = req.params;
@@ -61,14 +57,12 @@ const getUserPosts = async (req, res) => {
   }
 };
 
-// DELETE /api/admin/delete-user/:id
 const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
     const user = await User.findById(id);
     if (!user) return res.status(404).json({ message: 'User not found' });
 
-    // Delete posts and their media
     const posts = await Post.find({ userId: id });
     for (const p of posts) {
       if (Array.isArray(p.media)) {
@@ -85,7 +79,6 @@ const deleteUser = async (req, res) => {
     }
     await Post.deleteMany({ userId: id });
 
-    // Delete albums and their photos
     const albums = await Album.find({ userId: id });
     for (const a of albums) {
       if (Array.isArray(a.photos)) {
@@ -100,7 +93,6 @@ const deleteUser = async (req, res) => {
     }
     await Album.deleteMany({ userId: id });
 
-    // Delete videos and their cloudinary entries
     const videos = await Video.find({ userId: id });
     for (const v of videos) {
       try {
@@ -111,10 +103,8 @@ const deleteUser = async (req, res) => {
     }
     await Video.deleteMany({ userId: id });
 
-    // Delete refresh tokens
     await RefreshToken.deleteMany({ userId: id });
 
-    // Finally delete user
     await User.findByIdAndDelete(id);
 
     res.json({ message: 'User and content deleted' });
@@ -124,7 +114,6 @@ const deleteUser = async (req, res) => {
   }
 };
 
-// DELETE /api/admin/delete-post/:id
 const deletePost = async (req, res) => {
   try {
     const { id } = req.params;
@@ -149,7 +138,6 @@ const deletePost = async (req, res) => {
   }
 };
 
-// DELETE /api/admin/albums/:id
 const deleteAlbum = async (req, res) => {
   try {
     const { id } = req.params;
@@ -174,7 +162,6 @@ const deleteAlbum = async (req, res) => {
   }
 };
 
-// DELETE /api/admin/videos/:id
 const deleteVideo = async (req, res) => {
   try {
     const { id } = req.params;
@@ -205,7 +192,6 @@ module.exports = {
   deleteVideo,
 };
 
-// GET /api/admin/stats
 exports.getDashboardStats = async (req, res) => {
   try {
     const [totalUsers, totalVideos, totalPosts, photosAgg] = await Promise.all([
