@@ -14,7 +14,7 @@ const Footer = () => {
             <ul className="flex items-center justify-center gap-6 text-xs">
               <li><a href="#" className="text-slate-600 hover:text-slate-900">Privacy</a></li>
               <li><a href="#" className="text-slate-600 hover:text-slate-900">Terms</a></li>
-              <li><a href="#" className="text-slate-600 hover:text-slate-900">Contact</a></li>
+              <li><a href="https://ratneshjatav.netlify.app/" className="text-slate-600 hover:text-slate-900">Contact</a></li>
             </ul>
           </nav>
 

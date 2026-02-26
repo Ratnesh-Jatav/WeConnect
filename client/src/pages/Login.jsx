@@ -88,10 +88,7 @@ const Login = () => {
         <p className="rounded-lg border border-dashed border-slate-300 bg-slate-100 p-2.5 text-center text-sm text-slate-500">
           <a href="/admin/login" className="font-bold text-red-600 hover:text-red-700">Admin Login</a>
         </p>
-        <div className="mt-2 rounded-lg border border-slate-200 bg-slate-50 p-2.5 text-xs text-slate-600">
-          <div>Admin ID: {ADMIN_EMAIL}</div>
-          <div>Admin Password: {ADMIN_PASSWORD}</div>
-        </div>
+       
       </div>
     </div>
   );
