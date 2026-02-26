@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { FiLogOut, FiMenu } from 'react-icons/fi';
 import DEFAULT_AVATAR from '../utils/defaultAvatar';
@@ -9,6 +9,8 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = React.useState(false);
   const isAdmin = user?.role === 'admin';
+  const navLinkClass = ({ isActive }) =>
+    `navbar-link block py-1 text-sm font-medium text-white no-underline transition hover:opacity-80${isActive ? ' is-active' : ''}`;
 
   const handleLogout = () => {
     logout();
@@ -21,7 +23,7 @@ const Navbar = () => {
     <nav className="sticky top-0 z-50 bg-gradient-to-r from-indigo-500 to-violet-600 text-white shadow-md">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 md:h-[70px] md:py-0">
         <Link to={isAdmin ? '/admin/dashboard' : '/dashboard'} className="text-2xl font-bold text-white no-underline transition hover:scale-105">
-          📸 Family Memory
+          📸 WeConnect
         </Link>
 
         <button
@@ -34,17 +36,17 @@ const Navbar = () => {
         <div className={`${menuOpen ? 'max-h-[420px] p-5' : 'max-h-0 p-0'} absolute left-0 right-0 top-full overflow-hidden bg-gradient-to-r from-indigo-500 to-violet-600 transition-all duration-300 md:static md:flex md:max-h-none md:items-center md:gap-7 md:bg-transparent md:p-0`}>
           {isAdmin ? (
             <>
-              <Link to="/admin/dashboard" className="block py-1 text-sm font-medium text-white no-underline transition hover:opacity-80">Admin Dashboard</Link>
+              <NavLink to="/admin/dashboard" className={navLinkClass}>Admin Dashboard</NavLink>
               <span className="inline-block rounded-full bg-white/20 px-3 py-1 text-xs font-semibold">Admin</span>
             </>
           ) : (
             <>
-              <Link to="/dashboard" className="block py-1 text-sm font-medium text-white no-underline transition hover:opacity-80">Dashboard</Link>
-              <Link to="/gallery" className="block py-1 text-sm font-medium text-white no-underline transition hover:opacity-80">Gallery</Link>
-              <Link to="/videos" className="block py-1 text-sm font-medium text-white no-underline transition hover:opacity-80">Videos</Link>
-              <Link to="/search-users" className="block py-1 text-sm font-medium text-white no-underline transition hover:opacity-80">Search Users</Link>
-              <Link to="/connections" className="block py-1 text-sm font-medium text-white no-underline transition hover:opacity-80">Connections</Link>
-              <Link to="/requests" className="block py-1 text-sm font-medium text-white no-underline transition hover:opacity-80">Requests</Link>
+              <NavLink to="/dashboard" className={navLinkClass}>Dashboard</NavLink>
+              <NavLink to="/gallery" className={navLinkClass}>Gallery</NavLink>
+              <NavLink to="/videos" className={navLinkClass}>Videos</NavLink>
+              <NavLink to="/search-users" className={navLinkClass}>Search Users</NavLink>
+              <NavLink to="/connections" className={navLinkClass}>Connections</NavLink>
+              <NavLink to="/requests" className={navLinkClass}>Requests</NavLink>
             </>
           )}
 

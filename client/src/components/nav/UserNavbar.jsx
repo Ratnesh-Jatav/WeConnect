@@ -18,7 +18,7 @@ const UserNavbar = () => {
     <nav className="sticky top-0 z-50 bg-gradient-to-r from-indigo-500 to-violet-600 text-white shadow-md">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 md:h-[70px] md:py-0">
         <Link to="/dashboard" className="text-2xl font-bold text-white no-underline transition hover:scale-105">
-          📸 Family Memory
+          📸 WeConnect
         </Link>
 
         <button className="text-2xl text-white md:hidden" onClick={() => setMenuOpen(!menuOpen)}>

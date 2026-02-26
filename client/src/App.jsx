@@ -64,7 +64,7 @@ function AppContent() {
   if (loading) return null;
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col ">
       {showNavbar && <Navbar />}
       <main className="flex-grow">
         <Routes>

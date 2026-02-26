@@ -6,7 +6,7 @@ import AddFamilyMemberModal from '../components/AddFamilyMemberModal';
 import SearchBar from '../components/SearchBar';
 
 const Dashboard = () => {
-  const { user, isAdmin } = useAuth();
+  const { user } = useAuth();
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -43,14 +43,12 @@ const Dashboard = () => {
           <h1 className="mb-1 text-2xl font-bold md:text-3xl">Family Dashboard</h1>
           <p className="text-slate-500">Welcome, {user?.name}</p>
         </div>
-        {isAdmin && (
-          <button
-            className="rounded-lg bg-indigo-500 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-600"
-            onClick={() => setShowModal(true)}
-          >
-            + Add Family Member
-          </button>
-        )}
+        <button
+          className="rounded-lg bg-indigo-500 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-600"
+          onClick={() => setShowModal(true)}
+        >
+          + Add Family Member
+        </button>
       </div>
 
       <div className="mb-8 flex flex-wrap gap-4">

@@ -7,13 +7,12 @@ const {
   updateMember,
   deleteMember,
 } = require('../controllers/familyMemberController');
-const { auth, adminOnly } = require('../middleware/auth');
+const { auth } = require('../middleware/auth');
 
 router.get('/', auth, getAllMembers);
 router.get('/:id', auth, getMember);
-// require auth first so req.user exists, then check adminOnly
-router.post('/', auth, adminOnly, addMember);
-router.put('/:id', auth, adminOnly, updateMember);
-router.delete('/:id', auth, adminOnly, deleteMember);
+router.post('/', auth, addMember);
+router.put('/:id', auth, updateMember);
+router.delete('/:id', auth, deleteMember);
 
 module.exports = router;
