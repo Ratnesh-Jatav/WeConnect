@@ -66,7 +66,7 @@ export default function Profile() {
 
   return (
     <div className="mx-auto max-w-2xl px-5 py-10">
-      <h1 className="mb-4 text-2xl font-bold">Your Profile</h1>
+      <h1 className="mb-4 text-2xl font-bold text-white">Your Profile</h1>
 
       <form onSubmit={handleSubmit} className="space-y-4 rounded-md bg-white p-6 shadow-md">
         <div>
