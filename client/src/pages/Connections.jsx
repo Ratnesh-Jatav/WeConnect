@@ -20,7 +20,7 @@ export default function Connections() {
   return (
     <div className="mx-auto max-w-5xl px-5 py-10">
       <div className="mb-8">
-        <h1 className="mb-1 text-2xl font-bold md:text-3xl">Your Connections</h1>
+        <h1 className="mb-1 text-2xl font-bold md:text-3xl text-white ">Your Connections</h1>
         <p className="text-sm text-slate-500">Open a connection profile to view shared members, albums, and videos.</p>
       </div>
 

@@ -47,7 +47,7 @@ export default function ConnectionRequests() {
   return (
     <div className="mx-auto max-w-5xl px-5 py-10">
       <div className="mb-8">
-        <h1 className="mb-1 text-2xl font-bold md:text-3xl">Connection Requests</h1>
+        <h1 className="mb-1 text-2xl font-bold md:text-3xl text-white ">Connection Requests</h1>
         <p className="text-sm text-slate-500">Review and respond to incoming connection requests.</p>
       </div>
 

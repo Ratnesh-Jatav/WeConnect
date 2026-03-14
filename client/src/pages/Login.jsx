@@ -40,8 +40,8 @@ const Login = () => {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-indigo-500 to-violet-600 p-5">
       <div className="w-full max-w-[420px] rounded-2xl bg-white p-8 shadow-2xl md:p-10">
-        <h1 className="mb-2 text-3xl font-bold text-slate-800">Welcome Back</h1>
-        <p className="mb-7 text-sm text-slate-500">Access your family memories</p>
+        <h1 className="mb-2 text-center text-3xl font-bold text-slate-800">Welcome</h1>
+        <p className="mb-7 text-center text-sm text-slate-500">Access your family memories</p>
 
         <form onSubmit={handleSubmit} className="mb-5 space-y-5">
           <div>

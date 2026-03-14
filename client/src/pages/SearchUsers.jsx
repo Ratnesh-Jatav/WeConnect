@@ -34,7 +34,7 @@ export default function SearchUsers() {
   return (
     <div className="mx-auto max-w-5xl px-5 py-10">
       <div className="mb-8">
-        <h1 className="mb-1 text-2xl font-bold md:text-3xl">Search Users</h1>
+        <h1 className="mb-1 text-2xl font-bold md:text-3xl text-white ">Search Users</h1>
         <p className="text-sm text-slate-500">Find family members by name or email and send connection requests.</p>
       </div>
 
