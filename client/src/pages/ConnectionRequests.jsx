@@ -60,7 +60,7 @@ export default function ConnectionRequests() {
             <div className="flex items-center gap-3">
               <img src={r.profilePhoto || DEFAULT_AVATAR} alt="pf" className="h-12 w-12 rounded-full border border-slate-200 object-cover" />
               <div>
-                <div className="font-semibold text-slate-800 cursor-pointer text-indigo-600 hover:underline" onClick={() => { setPreviewUserId(r._id); setPreviewOpen(true); }}>{r.name}</div>
+                <div className="font-semibold text-indigo-600 cursor-pointer hover:underline" onClick={() => { setPreviewUserId(r._id); setPreviewOpen(true); }}>{r.name}</div>
                 <div className="text-sm text-slate-500">{r.email}</div>
               </div>
             </div>
