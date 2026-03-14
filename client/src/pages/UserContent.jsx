@@ -62,7 +62,7 @@ export default function UserContent() {
       </section>
 
       <section>
-        <h2 className="mb-3 text-lg font-semibold text-slate-800">Videos</h2>
+        <h2 className="mb-3 text-lg font-semibold text-white ">Videos</h2>
         {data.videos.length === 0 && <div className="rounded-xl bg-white p-6 text-center text-sm text-slate-500 shadow-md">No videos</div>}
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {data.videos.map((v) => (

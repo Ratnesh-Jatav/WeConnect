@@ -36,7 +36,7 @@ const Videos = () => {
     <div className="mx-auto max-w-6xl px-5 py-10">
       <div className="mb-10 flex flex-col items-start gap-5 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="mb-1 text-2xl font-bold md:text-3xl">Video Collection</h1>
+          <h1 className="mb-1 text-2xl font-bold text-white md:text-3xl">Video Collection</h1>
           <p className="text-slate-500">Watch and manage family videos</p>
         </div>
         {canManageContent && (

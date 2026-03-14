@@ -42,7 +42,7 @@ const Gallery = () => {
     <div className="mx-auto max-w-6xl px-5 py-10">
       <div className="mb-10 flex flex-col items-start gap-5 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="mb-1 text-2xl font-bold md:text-3xl">Photo Gallery</h1>
+          <h1 className="mb-1 text-2xl text-white font-bold md:text-3xl">Photo Gallery</h1>
           <p className="text-slate-500">Browse and organize family memories by event</p>
         </div>
         {canManageContent && (
