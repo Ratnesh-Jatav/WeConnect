@@ -2,6 +2,12 @@
 
 A comprehensive full-stack application for securely storing and managing family memories, including photos, videos, and family member information.
 
+## Synopsis
+
+- **Purpose:** A private family media & connections app for uploading, organizing, and sharing photos, videos, albums, and family-member profiles.
+- **Core features:** Authentication (JWT + refresh), album creation, photo/video upload & preview, family-member management, user connections and requests, admin dashboard and audit logs.
+- **Architecture:** React frontend (`client/`) and Node/Express backend (`server/`) using MongoDB for data and Cloudinary for media storage.
+
 ## Features
 
 ### Core Features
