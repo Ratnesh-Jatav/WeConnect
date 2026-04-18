@@ -35,6 +35,9 @@ const VideoCard = ({ video, onDelete }) => {
       <div className="flex flex-1 flex-col p-5">
         <h3 className="mb-2 text-lg font-semibold text-slate-800">{video.title}</h3>
         <p className="mb-2 text-sm font-semibold capitalize text-indigo-500">{video.eventType}</p>
+        <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+          {video.visibility === 'private' ? 'Private - Close Friends' : 'Public'}
+        </p>
         {video.description && <p className="mb-2.5 flex-1 text-[13px] text-slate-500">{video.description}</p>}
         <p className="mb-4 text-xs text-slate-400">{new Date(video.createdAt).toLocaleDateString()}</p>
 

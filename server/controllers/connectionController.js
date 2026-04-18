@@ -2,6 +2,7 @@ const User = require('../models/User');
 const FamilyMember = require('../models/FamilyMember');
 const Album = require('../models/Album');
 const Video = require('../models/Video');
+const { sanitizeAlbumForViewer, videoQueryForUser } = require('../utils/mediaAccess');
 
 const hasId = (idList = [], id) => idList.some((item) => item.toString() === id.toString());
 
@@ -134,9 +135,14 @@ exports.getUserContent = async (req, res) => {
 
     const members = await FamilyMember.find({ userId: ownerId }).sort({ createdAt: -1 });
 
-    const albums = await Album.find({ userId: ownerId }).sort({ eventDate: -1 });
+    const albums = (await Album.find({ userId: ownerId }).sort({ eventDate: -1 }))
+      .map((album) => sanitizeAlbumForViewer(album, requesterId, req.user.role))
+      .filter((album) => album.photos.length > 0 || album.userId.toString() === requesterId);
 
-    const videos = await Video.find({ userId: ownerId }).sort({ createdAt: -1 });
+    const videos = await Video.find({
+      userId: ownerId,
+      ...videoQueryForUser(requesterId, req.user.role),
+    }).sort({ createdAt: -1 });
 
     res.status(200).json({
       success: true,

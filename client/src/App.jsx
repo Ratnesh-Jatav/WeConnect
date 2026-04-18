@@ -16,6 +16,7 @@ import ConnectionRequests from './pages/ConnectionRequests';
 import Connections from './pages/Connections';
 import UserContent from './pages/UserContent';
 import Profile from './pages/Profile';
+import CloseFriends from './pages/CloseFriends';
 
 const UserRoute = ({ children }) => {
   const { loading, isAuthenticated, user } = useAuth();
@@ -93,6 +94,14 @@ function AppContent() {
           element={
             <UserRoute>
               <Videos />
+            </UserRoute>
+          }
+        />
+        <Route
+          path="/close-friends"
+          element={
+            <UserRoute>
+              <CloseFriends />
             </UserRoute>
           }
         />

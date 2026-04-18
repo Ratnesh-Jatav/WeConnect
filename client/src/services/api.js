@@ -1,6 +1,9 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://weconnect-x9vi.onrender.com/api';
+const isLocalHost = typeof window !== 'undefined' && ['localhost', '127.0.0.1'].includes(window.location.hostname);
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL ||
+  (isLocalHost ? 'http://localhost:5000/api' : 'https://weconnect-x9vi.onrender.com/api');
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -84,4 +87,11 @@ export const userService = {
   updateProfile: (formData) => apiClient.put('/users/profile', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   }),
+};
+
+export const closeFriendService = {
+  getAll: () => apiClient.get('/users/close-friends'),
+  getCandidates: () => apiClient.get('/users/close-friends/candidates'),
+  add: (userId) => apiClient.post(`/users/close-friends/${userId}`),
+  remove: (userId) => apiClient.delete(`/users/close-friends/${userId}`),
 };

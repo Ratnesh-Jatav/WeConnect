@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { MEDIA_VISIBILITY } = require('../utils/mediaAccess');
 
 const videoSchema = new mongoose.Schema({
   userId: {
@@ -31,6 +32,18 @@ const videoSchema = new mongoose.Schema({
   duration: Number,
   thumbnail: String,
   tags: [String],
+  visibility: {
+    type: String,
+    enum: Object.values(MEDIA_VISIBILITY),
+    default: MEDIA_VISIBILITY.PUBLIC,
+    index: true,
+  },
+  allowedUsers: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
+  ],
   isPublic: {
     type: Boolean,
     default: false,

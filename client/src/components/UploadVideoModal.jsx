@@ -1,11 +1,18 @@
 import React, { useState } from 'react';
 import { videoService } from '../services/api';
 import toast from 'react-hot-toast';
+import CloseFriendsSelector from './CloseFriendsSelector';
 
 const eventTypes = ['wedding', 'birthday', 'festival', 'trip', 'anniversary', 'general', 'other'];
 
 const UploadVideoModal = ({ onClose, onUpload }) => {
-  const [formData, setFormData] = useState({ title: '', description: '', eventType: 'general' });
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    eventType: 'general',
+    visibility: 'public',
+    allowedUsers: [],
+  });
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -16,10 +23,18 @@ const UploadVideoModal = ({ onClose, onUpload }) => {
     e.preventDefault();
     setLoading(true);
     try {
+      if (formData.visibility === 'private' && formData.allowedUsers.length === 0) {
+        toast.error('Select at least one close friend for private videos');
+        setLoading(false);
+        return;
+      }
+
       const uploadFormData = new FormData();
       uploadFormData.append('title', formData.title);
       uploadFormData.append('description', formData.description);
       uploadFormData.append('eventType', formData.eventType);
+      uploadFormData.append('visibility', formData.visibility);
+      uploadFormData.append('allowedUsers', JSON.stringify(formData.allowedUsers));
       uploadFormData.append('video', file);
       await videoService.upload(uploadFormData);
       toast.success('Video uploaded!');
@@ -59,6 +74,36 @@ const UploadVideoModal = ({ onClose, onUpload }) => {
             <label className="mb-2 block font-medium text-slate-800">Description</label>
             <textarea name="description" value={formData.description} onChange={handleChange} placeholder="Video description" rows="3" className="w-full rounded-lg border border-slate-200 p-3 text-sm focus:border-indigo-500 focus:outline-none focus:ring-4 focus:ring-indigo-100" />
           </div>
+
+          <div>
+            <label className="mb-2 block font-medium text-slate-800">Visibility</label>
+            <div className="grid grid-cols-2 gap-3">
+              {['public', 'private'].map((visibility) => (
+                <label
+                  key={visibility}
+                  className={`cursor-pointer rounded-lg border p-3 text-sm ${
+                    formData.visibility === visibility ? 'border-indigo-500 bg-indigo-50' : 'border-slate-200'
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="visibility"
+                    value={visibility}
+                    checked={formData.visibility === visibility}
+                    onChange={handleChange}
+                    className="mr-2"
+                  />
+                  {visibility === 'public' ? 'Public' : 'Private (Close Friends)'}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <CloseFriendsSelector
+            visibility={formData.visibility}
+            selectedUsers={formData.allowedUsers}
+            onChange={(allowedUsers) => setFormData((current) => ({ ...current, allowedUsers }))}
+          />
 
           <div className="mt-5 flex justify-end gap-2.5">
             <button type="button" className="rounded-lg bg-slate-200 px-5 py-2.5 text-sm font-semibold text-slate-800 hover:bg-slate-300" onClick={onClose}>Cancel</button>

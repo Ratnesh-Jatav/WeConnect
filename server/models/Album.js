@@ -1,4 +1,39 @@
 const mongoose = require('mongoose');
+const { MEDIA_VISIBILITY } = require('../utils/mediaAccess');
+
+const photoSchema = new mongoose.Schema({
+  imageUrl: {
+    type: String,
+    required: true,
+  },
+  publicId: {
+    type: String,
+    required: true,
+  },
+  caption: {
+    type: String,
+    default: '',
+    trim: true,
+  },
+  visibility: {
+    type: String,
+    enum: Object.values(MEDIA_VISIBILITY),
+    default: MEDIA_VISIBILITY.PUBLIC,
+    index: true,
+  },
+  allowedUsers: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
+  ],
+  uploadedAt: {
+    type: Date,
+    default: Date.now,
+  },
+}, {
+  _id: true,
+});
 
 const albumSchema = new mongoose.Schema({
   userId: {
@@ -32,15 +67,7 @@ const albumSchema = new mongoose.Schema({
     default: null,
   },
   photos: [
-    {
-      imageUrl: String,
-      publicId: String,
-      caption: String,
-      uploadedAt: {
-        type: Date,
-        default: Date.now,
-      },
-    },
+    photoSchema,
   ],
   tags: [String],
   isPublic: {

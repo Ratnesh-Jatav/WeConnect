@@ -66,7 +66,15 @@ const Videos = () => {
         <VideoList videos={videos} onUpdate={loadVideos} />
       )}
 
-      {showModal && <UploadVideoModal onClose={() => setShowModal(false)} onUpload={loadVideos} />}
+      {showModal && (
+        <UploadVideoModal
+          onClose={() => setShowModal(false)}
+          onUpload={() => {
+            loadVideos();
+            setShowModal(false);
+          }}
+        />
+      )}
     </div>
   );
 };

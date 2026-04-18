@@ -55,6 +55,7 @@ export default function UserContent() {
             <div key={a._id} className="rounded-xl bg-white p-4 shadow-md">
               <div className="font-semibold text-slate-800">{a.title}</div>
               <div className="text-sm text-slate-500">{new Date(a.eventDate).toLocaleDateString()}</div>
+              <div className="mt-1 text-xs font-medium text-slate-500">{a.photoCount ?? a.photos?.length ?? 0} visible photos</div>
               {a.coverImage && <img src={a.coverImage} alt="cov" className="mt-3 h-44 w-full rounded-lg object-cover" />}
             </div>
           ))}
@@ -68,6 +69,9 @@ export default function UserContent() {
           {data.videos.map((v) => (
             <div key={v._id} className="rounded-xl bg-white p-4 shadow-md">
               <div className="font-semibold text-slate-800">{v.title}</div>
+              <div className="text-xs font-medium uppercase tracking-wide text-slate-500">
+                {v.visibility === 'private' ? 'Private - Close Friends' : 'Public'}
+              </div>
               <video src={v.videoUrl} controls className="mt-3 w-full rounded-lg" />
             </div>
           ))}

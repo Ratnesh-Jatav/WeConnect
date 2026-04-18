@@ -36,6 +36,10 @@ const AlbumCard = ({ album, onDelete, onViewPhotos, onEdit }) => {
         <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
           <button className="rounded-lg bg-white/90 px-4 py-2 text-xs font-semibold text-slate-800" onClick={() => onViewPhotos(album)}>View Photos</button>
         </div>
+
+        <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-semibold text-slate-800">
+          {album.photoCount ?? album.photos.length} accessible
+        </span>
       </div>
 
       <div className="flex flex-1 flex-col p-5">
@@ -43,7 +47,7 @@ const AlbumCard = ({ album, onDelete, onViewPhotos, onEdit }) => {
         <p className="mb-1 text-sm font-semibold capitalize text-indigo-500">{album.eventType}</p>
         <p className="mb-2.5 text-[13px] text-slate-500">{eventDate}</p>
         {album.description && <p className="mb-2.5 text-[13px] text-slate-500">{album.description}</p>}
-        <p className="mb-4 text-[13px] font-medium text-slate-500">{album.photos.length} photos</p>
+        <p className="mb-4 text-[13px] font-medium text-slate-500">{album.photoCount ?? album.photos.length} visible photos</p>
         <div className="mt-auto flex gap-2">
           {canEditAlbum && (
             <button className="rounded-lg bg-indigo-500 px-4 py-2 text-xs font-semibold text-white hover:bg-indigo-600" onClick={(e) => { e.stopPropagation(); if (onEdit) onEdit(album); }}>Edit</button>

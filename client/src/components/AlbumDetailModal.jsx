@@ -88,6 +88,9 @@ const AlbumDetailModal = ({ album, onClose, onUpdate }) => {
                     onDoubleClick={() => handlePhotoDoubleClick(photo)}
                     className="h-full w-full cursor-pointer object-cover"
                   />
+                  <div className="absolute left-2 top-2 rounded-full bg-black/75 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-white">
+                    {photo.visibility === 'private' ? 'Private' : 'Public'}
+                  </div>
                   {photo.caption && <p className="absolute bottom-0 left-0 right-0 bg-black/80 p-2 text-xs text-white">{photo.caption}</p>}
                   {canManageAlbum && (
                     <button className="absolute right-1.5 top-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-red-500 text-xl text-white opacity-0 transition group-hover:opacity-100" onClick={() => handleDeletePhoto(photo._id)}>×</button>
